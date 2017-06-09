@@ -1,0 +1,796 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Android四大组件," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.1" />
+
+
+
+
+
+
+<meta name="description" content="戏说江湖静如水，游荡江湖才有情。我就是江湖中的一个戏子。 俗话说，入行先入门。作为一名android学习者，四大组件是android中的核心组件，岂有不学之理。然而，本人才疏学浅，叙述略有不当之处，敬请谅解。  BroadcastReceiver在android开发中使用的频率也是蛮高的，主要的作用来接受系统广播或者用户广播，然后进行相应的处理，很像我们生活中的广播。  类别  普通广播 对于多个">
+<meta name="keywords" content="Android四大组件">
+<meta property="og:type" content="article">
+<meta property="og:title" content="戏说BroadcastReceiver">
+<meta property="og:url" content="https://final-qun.github.io/2017/06/09/戏说BroadcastReceiver/index.html">
+<meta property="og:site_name" content="final-qun">
+<meta property="og:description" content="戏说江湖静如水，游荡江湖才有情。我就是江湖中的一个戏子。 俗话说，入行先入门。作为一名android学习者，四大组件是android中的核心组件，岂有不学之理。然而，本人才疏学浅，叙述略有不当之处，敬请谅解。  BroadcastReceiver在android开发中使用的频率也是蛮高的，主要的作用来接受系统广播或者用户广播，然后进行相应的处理，很像我们生活中的广播。  类别  普通广播 对于多个">
+<meta property="og:updated_time" content="2017-06-09T03:52:56.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="戏说BroadcastReceiver">
+<meta name="twitter:description" content="戏说江湖静如水，游荡江湖才有情。我就是江湖中的一个戏子。 俗话说，入行先入门。作为一名android学习者，四大组件是android中的核心组件，岂有不学之理。然而，本人才疏学浅，叙述略有不当之处，敬请谅解。  BroadcastReceiver在android开发中使用的频率也是蛮高的，主要的作用来接受系统广播或者用户广播，然后进行相应的处理，很像我们生活中的广播。  类别  普通广播 对于多个">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://final-qun.github.io/2017/06/09/戏说BroadcastReceiver/"/>
+
+
+
+
+
+  <title>戏说BroadcastReceiver | final-qun</title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">final-qun</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">不破不立，破而后立</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://final-qun.github.io/2017/06/09/戏说BroadcastReceiver/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="final-qun">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="final-qun">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">戏说BroadcastReceiver</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-06-09T11:02:00+08:00">
+                2017-06-09
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Android开发/" itemprop="url" rel="index">
+                    <span itemprop="name">Android开发</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h6 id="戏说江湖静如水，游荡江湖才有情。我就是江湖中的一个戏子。"><a href="#戏说江湖静如水，游荡江湖才有情。我就是江湖中的一个戏子。" class="headerlink" title="戏说江湖静如水，游荡江湖才有情。我就是江湖中的一个戏子。"></a>戏说江湖静如水，游荡江湖才有情。我就是江湖中的一个戏子。</h6><hr>
+<p>俗话说，入行先入门。作为一名android学习者，四大组件是android中的核心组件，岂有不学之理。然而，本人才疏学浅，叙述略有不当之处，敬请谅解。</p>
+<hr>
+<p>BroadcastReceiver在android开发中使用的频率也是蛮高的，主要的作用来接受系统广播或者用户广播，然后进行相应的处理，很像我们生活中的广播。</p>
+<ul>
+<li><p>类别</p>
+<ul>
+<li><p>普通广播</p>
+<p>对于多个接受者来说是完全异步的，每个接受者无需等待就可以接受到广播，并且接受者之间不会有任何影响。这种广播，接受者无法终止广播，也无法阻止其他接受者的接收动作。</p>
+</li>
+<li><p>有序广播</p>
+<p>有序广播每次只能发送到优先级较高的接接收者哪里，然后由优先级高的接收者传播到优先级低的接收者那里，并且优先级高的接收者能够终止这个广播。</p>
+<p>需要定义权限，在必要时来终止权限</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">&lt;permission android:protectionLevel=&quot;normal&quot;</div><div class="line">         android:name=&quot;scott.permission.BROADCAST_PERMISSION&quot;/&gt;</div></pre></td></tr></table></figure>
+<p>然后声明使用了该权限</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">&lt;uses-permission android:name=&quot;scott.permission.BROADCAST_PERMISSION&quot;</div></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+<li><p>使用方法</p>
+<ul>
+<li>继承android.content.BroadcastReceiver</li>
+<li>实现其onReceiver方法</li>
+<li><p>静态注册</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">&lt;action android:name=&quot;andorid.intent.action.BROADCAST&quot;/&gt;</div></pre></td></tr></table></figure>
+</li>
+<li><p>动态注册</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">IntentFilter filter = new IntentFilter();</div><div class="line">filter.addAction(&quot;android.intent.action.BROADCAST&quot;);</div></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+</ul>
+<h4 id="相关案例使用"><a href="#相关案例使用" class="headerlink" title="相关案例使用"></a>相关案例使用</h4><ul>
+<li><p>开机启动服务</p>
+<ol>
+<li><p>注册广播来接收开机启动广播，并启动自己的服务</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">public class BootCompleteReceiver extends BroadcastReceiver &#123;</div><div class="line"></div><div class="line">    @Override</div><div class="line">    public void onReceive(Context context, Intent intent) &#123;</div><div class="line">        Intent bootIntent = new Intent(context,BootCompleteService.class);</div><div class="line">        context.startService(bootIntent);</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+</li>
+<li><p>实现自己的服务</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">public class BootCompleteService extends Service&#123;</div><div class="line">    @Override</div><div class="line">    public IBinder onBind(Intent intent) &#123;</div><div class="line">        return null;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+</li>
+<li><p>配置相关信息</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"> &lt;receiver android:name=&quot;.BootCompleteReceiver&quot;&gt;</div><div class="line">    &lt;intent-filter&gt;</div><div class="line">        &lt;action android:name=&quot;android.intent.action.BOOT_COMPLETED&quot;/&gt;</div><div class="line">        &lt;category android:name=&quot;android.intent.category.DEFAULT&quot;/&gt;</div><div class="line">    &lt;/intent-filter&gt;</div><div class="line">&lt;/receiver&gt;</div><div class="line">&lt;service android:name=&quot;.BootCompleteService&quot;/&gt;</div></pre></td></tr></table></figure>
+</li>
+<li><p>声明使用权限</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">&lt;uses-permission android:name=&quot;android.permission.RECEIVE_BOOT_COMPLETED&quot;/&gt;</div></pre></td></tr></table></figure>
+</li>
+</ol>
+</li>
+<li><p>网络状态变化</p>
+<ol>
+<li><p>接收网络改变广播</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line">public class NetworkStateReciver extends BroadcastReceiver &#123;</div><div class="line">    @Override</div><div class="line">    public void onReceive(Context context, Intent intent) &#123;</div><div class="line">        if(isNetworkAvailable(context))&#123;</div><div class="line">            Toast.makeText(context,&quot;network is disconnect&quot;,Toast.LENGTH_SHORT);</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    public static boolean isNetworkAvailable(Context context)&#123;</div><div class="line">        ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);</div><div class="line">        NetworkInfo[] info = cm.getAllNetworkInfo();</div><div class="line">        if (info != null) &#123;</div><div class="line">            for (int i = 0;i &lt; info.length;i++)&#123;</div><div class="line">                if(info[i].getState() == NetworkInfo.State.CONNECTED) &#123;</div><div class="line">                    return true;</div><div class="line">                &#125;</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">        return false;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+</li>
+<li><p>配置相关信息</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">&lt;receiver android:name=&quot;.NetworkStateReciver&quot;&gt;</div><div class="line">    &lt;intent-filter&gt;</div><div class="line">        &lt;action android:name=&quot;android.net.conn.CONNECTIVITY_CHANGE&quot;/&gt;</div><div class="line">        &lt;category android:name=&quot;android.intent.category.DEFAULT&quot;/&gt;</div><div class="line">    &lt;/intent-filter&gt;</div><div class="line">&lt;/receiver&gt;</div></pre></td></tr></table></figure>
+</li>
+<li><p>声明使用权限</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">&lt;uses-permission android:name=&quot;android.permission.ACCESS_NETWORK_STATE&quot;/&gt;</div></pre></td></tr></table></figure>
+</li>
+</ol>
+</li>
+<li><p>电量变化</p>
+<ol>
+<li><p>接收电量信息</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">public class BatteryChangeReceiver extends BroadcastReceiver &#123;</div><div class="line">    @Override</div><div class="line">    public void onReceive(Context context, Intent intent) &#123;</div><div class="line">        int currentLevel = intent.getIntExtra(BatteryManager.EXTRA_LEVEL,0);</div><div class="line">        int total = intent.getIntExtra(BatteryManager.EXTRA_SCALE,1);</div><div class="line">        int precent = currentLevel * 100 / total;</div><div class="line">        //TODO:you want to do</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+</li>
+<li><p>配置相关信息</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">&lt;receiver android:name=&quot;.BatteryChangeReceiver&quot;&gt;</div><div class="line">    &lt;intent-filter&gt;</div><div class="line">        &lt;action android:name=&quot;android.intent.action.BATTERY_CHANGED&quot;/&gt;</div><div class="line">        &lt;category android:name=&quot;android.intent.category.DEFAULT&quot;/&gt;</div><div class="line">    &lt;/intent-filter&gt;</div><div class="line">&lt;/receiver&gt;</div></pre></td></tr></table></figure>
+</li>
+<li><p>声明使用权限</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">&lt;uses-permission android:name=&quot;android.permission.BATTERY_STATS&quot;/&gt;</div></pre></td></tr></table></figure>
+</li>
+<li><p>立即获得电量信息</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">Intent batteryIntent = getApplicationContext().registerReceiver(null,new IntentFilter(Intent.ACTION_BATTERY_CHANGED));</div><div class="line">int currentLevel = batteryIntent.getIntExtra(BatteryManager.EXTRA_LEVEL,0);</div><div class="line">int totalLevel = batteryIntent.getIntExtra(BatteryManager.EXTRA_SCALE,1);</div><div class="line">int precent = currentLevel * 100 / totalLevel;</div></pre></td></tr></table></figure>
+</li>
+</ol>
+</li>
+</ul>
+<hr>
+<p>上述很简单的描述了BroadcastReceiver的使用方法和相关的案例，你是否又get到了呢？</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Android四大组件/" rel="tag"># Android四大组件</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/06/09/戏说Service/" rel="next" title="戏说Service">
+                <i class="fa fa-chevron-left"></i> 戏说Service
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/06/09/戏说ContentProvider/" rel="prev" title="戏说ContentProvider">
+                戏说ContentProvider <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.gif"
+               alt="final-qun" />
+          <p class="site-author-name" itemprop="name">final-qun</p>
+           
+              <p class="site-description motion-element" itemprop="description">这里只是代码的搬运工</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/">
+                <span class="site-state-item-count">5</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">1</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">1</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-6"><a class="nav-link" href="#戏说江湖静如水，游荡江湖才有情。我就是江湖中的一个戏子。"><span class="nav-number">1.</span> <span class="nav-text">戏说江湖静如水，游荡江湖才有情。我就是江湖中的一个戏子。</span></a></li></ol></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#相关案例使用"><span class="nav-number"></span> <span class="nav-text">相关案例使用</span></a></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">final-qun</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+  
+  <script type="text/javascript" src="/lib/three/three.min.js"></script>
+
+  
+  <script type="text/javascript" src="/lib/three/three-waves.min.js"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

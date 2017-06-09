@@ -1,0 +1,771 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Android四大组件," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.1" />
+
+
+
+
+
+
+<meta name="description" content="戏说江湖静如水，游荡江湖才有情。我就是江湖中的一个戏子。 俗话说，入行先入门。作为一名android学习者，四大组件是android中的核心组件，岂有不学之理。然而，本人才疏学浅，叙述略有不当之处，敬请谅解。  ContentProvider为存储和提供数据提供统一的接口，可以在不同的应用程序间共享数据。 ContentProvider1.在AndroidMainfest.xml中声明123&amp;lt">
+<meta name="keywords" content="Android四大组件">
+<meta property="og:type" content="article">
+<meta property="og:title" content="戏说ContentProvider">
+<meta property="og:url" content="https://final-qun.github.io/2017/06/09/戏说ContentProvider/index.html">
+<meta property="og:site_name" content="final-qun">
+<meta property="og:description" content="戏说江湖静如水，游荡江湖才有情。我就是江湖中的一个戏子。 俗话说，入行先入门。作为一名android学习者，四大组件是android中的核心组件，岂有不学之理。然而，本人才疏学浅，叙述略有不当之处，敬请谅解。  ContentProvider为存储和提供数据提供统一的接口，可以在不同的应用程序间共享数据。 ContentProvider1.在AndroidMainfest.xml中声明123&amp;lt">
+<meta property="og:updated_time" content="2017-06-09T03:52:56.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="戏说ContentProvider">
+<meta name="twitter:description" content="戏说江湖静如水，游荡江湖才有情。我就是江湖中的一个戏子。 俗话说，入行先入门。作为一名android学习者，四大组件是android中的核心组件，岂有不学之理。然而，本人才疏学浅，叙述略有不当之处，敬请谅解。  ContentProvider为存储和提供数据提供统一的接口，可以在不同的应用程序间共享数据。 ContentProvider1.在AndroidMainfest.xml中声明123&amp;lt">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://final-qun.github.io/2017/06/09/戏说ContentProvider/"/>
+
+
+
+
+
+  <title>戏说ContentProvider | final-qun</title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">final-qun</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">不破不立，破而后立</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://final-qun.github.io/2017/06/09/戏说ContentProvider/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="final-qun">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="final-qun">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">戏说ContentProvider</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-06-09T11:02:00+08:00">
+                2017-06-09
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Android开发/" itemprop="url" rel="index">
+                    <span itemprop="name">Android开发</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h6 id="戏说江湖静如水，游荡江湖才有情。我就是江湖中的一个戏子。"><a href="#戏说江湖静如水，游荡江湖才有情。我就是江湖中的一个戏子。" class="headerlink" title="戏说江湖静如水，游荡江湖才有情。我就是江湖中的一个戏子。"></a>戏说江湖静如水，游荡江湖才有情。我就是江湖中的一个戏子。</h6><hr>
+<p>俗话说，入行先入门。作为一名android学习者，四大组件是android中的核心组件，岂有不学之理。然而，本人才疏学浅，叙述略有不当之处，敬请谅解。</p>
+<hr>
+<p>ContentProvider为存储和提供数据提供统一的接口，可以在不同的应用程序间共享数据。</p>
+<h5 id="ContentProvider"><a href="#ContentProvider" class="headerlink" title="ContentProvider"></a>ContentProvider</h5><p>1.在AndroidMainfest.xml中声明<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">&lt;provider</div><div class="line">    android:authorities=&quot;com.android.test.TestContentProvider&quot;</div><div class="line">    android:name=&quot;.TestContentProvider&quot;/&gt;</div></pre></td></tr></table></figure></p>
+<p>authorities是ContentProvider的唯一表示，，让系统可以方便的找到对应的ContentProvider以便进行操作。</p>
+<p>这样我们的自定义的ContentProvider就声明好了，现在来实现。</p>
+<p>2.继承并实现ContentProvider的方法</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div></pre></td><td class="code"><pre><div class="line">public class TestContentProvider extends ContentProvider &#123;</div><div class="line">    @Override</div><div class="line">    public boolean onCreate() &#123;</div><div class="line">        return false;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    @Nullable</div><div class="line">    @Override</div><div class="line">    public Cursor query(@NonNull Uri uri, @Nullable String[] strings, @Nullable String s, @Nullable String[] strings1, @Nullable String s1) &#123;</div><div class="line">        return null;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    @Nullable</div><div class="line">    @Override</div><div class="line">    public String getType(@NonNull Uri uri) &#123;</div><div class="line">        return null;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    @Nullable</div><div class="line">    @Override</div><div class="line">    public Uri insert(@NonNull Uri uri, @Nullable ContentValues contentValues) &#123;</div><div class="line">        return null;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    @Override</div><div class="line">    public int delete(@NonNull Uri uri, @Nullable String s, @Nullable String[] strings) &#123;</div><div class="line">        return 0;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    @Override</div><div class="line">    public int update(@NonNull Uri uri, @Nullable ContentValues contentValues, @Nullable String s, @Nullable String[] strings) &#123;</div><div class="line">        return 0;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h5 id="SqliteOpenHelper"><a href="#SqliteOpenHelper" class="headerlink" title="SqliteOpenHelper"></a>SqliteOpenHelper</h5><p>我们可以看到，继承ContentProvider至少要重写六个方法，其中onCreate方法使用来初始化数据用的，一般用来初始化SqliteOpenHelper。剩下的就是对数据库的增删改查以及获取数据的mimeType。</p>
+<p>既然疏导了SqliteOpenHelper，那么它是用来干什么的呢？SqliteOpenHelper从字面意义上来看就是数据库连接的工具，一般我们想要对操作android内部的数据库需要继承该类。<br>继承并实现SqliteOpenHelper<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line">public class TestDatabaseHelper extends SQLiteOpenHelper &#123;</div><div class="line"></div><div class="line">    public TestDatabaseHelper(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) &#123;</div><div class="line">        super(context, name, factory, version);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    @Override</div><div class="line">    public void onCreate(SQLiteDatabase sqLiteDatabase) &#123;</div><div class="line"></div><div class="line">    &#125;</div><div class="line"></div><div class="line">    @Override</div><div class="line">    public void onUpgrade(SQLiteDatabase sqLiteDatabase, int oldVersion, int newVersion) &#123;</div><div class="line"></div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>需要实现onCreate和onUpgrade方法，其中onCreate是用来创建数据的，一般我们的数据的创建，各种表，视图的创建都是在该方法中实现的。onUpgrade是在数据库升级的时候调用的，通过构造方法传入不同的version可以来标明数据库的升级，在该方法中我们可以通过oldVersion和newVersion来进行比较，提示用户的升级，并且可以修改数据库。</p>
+<h5 id="Uri"><a href="#Uri" class="headerlink" title="Uri"></a>Uri</h5><p>讲了这么多，你可能会有疑问，那我们是怎样去调用呢？通过对ContentProvider的实现你可能已经发现了，对数据的增删改查都需要传入uri，这个uri就是关键。首先我们得了解一下Uri的构成。一般Uri的构成可以分为三个部分，scheme，authorities，path。</p>
+<p>现在我们来用一个Uri来作为示例进行讲解吧<br>content://com.android.test.TestContentProvider/test/1</p>
+<table>
+<thead>
+<tr>
+<th>名称</th>
+<th>示例</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>scheme</td>
+<td>content://</td>
+<td>Android中已经规定了scheme为content://</td>
+</tr>
+<tr>
+<td>authorities</td>
+<td>com.android.test.TestContentProvider</td>
+<td>这个就是我们provider中定义的authorities</td>
+</tr>
+<tr>
+<td>path</td>
+<td>test/1</td>
+<td>要查询数据的表或者其id</td>
+</tr>
+</tbody>
+</table>
+<p>我们知道了Uri的构成，那么怎样去生成这样一个Uri呢？</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">Uri uri = Uri.prase(&quot;content://com.android.test.TestContentProvider/test&quot;);</div></pre></td></tr></table></figure>
+<p>这样我们就生成了一个uri，然后我们就可以通过ContentResolver就可以通过Uri来对数据库进行增删改查了。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">Uri uri = Uri.prase(&quot;content://com.android.test.TestContentProvider/test&quot;);</div><div class="line">ContentValues cv = new ContentValues();</div><div class="line">//此处省略数据的添加  cv.add()...</div><div class="line">getContentResolver().insert(uri,cv);</div></pre></td></tr></table></figure>
+<p>可能你又要问了，那系统怎么知道我们要查询的是哪个表，或者是哪个id呢？其实这中间还有一个关键的类没有说，那就是UriMatcher<br>UriMatcher就是用来匹配相应的uri，然后返回对应的code，以便用户进行操作。<br>我们来实际操作一下</p>
+<p>首先需要在自定义ContentProvider中定义UriMatcher。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">private static UriMatcher matcher = new UriMatcher(UriMatcher.NO_MATCH);</div></pre></td></tr></table></figure></p>
+<p>声明对应的常量，并进行addUri操作，addUri操作一般放在静态代码块中，这样在类的加载时可以完成uri的添加操作。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">private static final Stirng AUTHORITY = &quot;co.android.test.TestContentProvider&quot;;</div><div class="line">private static final int TEST = 1;</div><div class="line">static  &#123;</div><div class="line">    matcher.addUri(AUTHORITY,&quot;test&quot;,TEST);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>用户匹配Uri并进行处理。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">switch (matcher.match(uri)) &#123;</div><div class="line">    case TEST:</div><div class="line">        break;</div><div class="line">    default:</div><div class="line">        break;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h4 id="注意"><a href="#注意" class="headerlink" title="注意"></a><em>注意</em></h4><hr>
+<p><em>1.new UriMatcher中的参数一般选UriMatcher.NO_MATCH</em></p>
+<p><em>2.addUri中三个参数分别代表的含义：AUTHORITY——provider的唯一标识，“test”——查询的表或者id（“test/#”——代表查询id），TEST——匹配成功后返回的code值</em></p>
+<p><em>3.match匹配成功后返回的code值即是addUri中添加的第三个参数（例如上面例子中的TEST）</em></p>
+<hr>
+<p>写到这里，关于ContentProvider的介绍就差不多了，你是否能写出自己的ContentProvider呢？</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Android四大组件/" rel="tag"># Android四大组件</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/06/09/戏说BroadcastReceiver/" rel="next" title="戏说BroadcastReceiver">
+                <i class="fa fa-chevron-left"></i> 戏说BroadcastReceiver
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/06/09/戏说Activity/" rel="prev" title="戏说Activity">
+                戏说Activity <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.gif"
+               alt="final-qun" />
+          <p class="site-author-name" itemprop="name">final-qun</p>
+           
+              <p class="site-description motion-element" itemprop="description">这里只是代码的搬运工</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/">
+                <span class="site-state-item-count">5</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">1</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">1</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-6"><a class="nav-link" href="#戏说江湖静如水，游荡江湖才有情。我就是江湖中的一个戏子。"><span class="nav-number">1.</span> <span class="nav-text">戏说江湖静如水，游荡江湖才有情。我就是江湖中的一个戏子。</span></a></li></ol></li><li class="nav-item nav-level-5"><a class="nav-link" href="#ContentProvider"><span class="nav-number"></span> <span class="nav-text">ContentProvider</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#SqliteOpenHelper"><span class="nav-number"></span> <span class="nav-text">SqliteOpenHelper</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Uri"><span class="nav-number"></span> <span class="nav-text">Uri</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#注意"><span class="nav-number"></span> <span class="nav-text">注意</span></a></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">final-qun</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+  
+  <script type="text/javascript" src="/lib/three/three.min.js"></script>
+
+  
+  <script type="text/javascript" src="/lib/three/three-waves.min.js"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

@@ -1,0 +1,763 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Android四大组件," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.1" />
+
+
+
+
+
+
+<meta name="description" content="戏说江湖静如水，游荡江湖才有情。我就是江湖中的一个戏子。 俗话说，入行先入门。作为一名android学习者，四大组件是android中的核心组件，岂有不学之理。然而，本人才疏学浅，叙述略有不当之处，敬请谅解。  Service是四大组件之一，使用的频率也非常高。Service相当于没有界面的Activity。为什么这样说呢？这就得明白Service几个重要的常识。1Service和Activity">
+<meta name="keywords" content="Android四大组件">
+<meta property="og:type" content="article">
+<meta property="og:title" content="戏说Service">
+<meta property="og:url" content="https://final-qun.github.io/2017/06/09/戏说Service/index.html">
+<meta property="og:site_name" content="final-qun">
+<meta property="og:description" content="戏说江湖静如水，游荡江湖才有情。我就是江湖中的一个戏子。 俗话说，入行先入门。作为一名android学习者，四大组件是android中的核心组件，岂有不学之理。然而，本人才疏学浅，叙述略有不当之处，敬请谅解。  Service是四大组件之一，使用的频率也非常高。Service相当于没有界面的Activity。为什么这样说呢？这就得明白Service几个重要的常识。1Service和Activity">
+<meta property="og:updated_time" content="2017-06-09T03:52:54.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="戏说Service">
+<meta name="twitter:description" content="戏说江湖静如水，游荡江湖才有情。我就是江湖中的一个戏子。 俗话说，入行先入门。作为一名android学习者，四大组件是android中的核心组件，岂有不学之理。然而，本人才疏学浅，叙述略有不当之处，敬请谅解。  Service是四大组件之一，使用的频率也非常高。Service相当于没有界面的Activity。为什么这样说呢？这就得明白Service几个重要的常识。1Service和Activity">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://final-qun.github.io/2017/06/09/戏说Service/"/>
+
+
+
+
+
+  <title>戏说Service | final-qun</title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">final-qun</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">不破不立，破而后立</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://final-qun.github.io/2017/06/09/戏说Service/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="final-qun">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="final-qun">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">戏说Service</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-06-09T11:02:00+08:00">
+                2017-06-09
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Android开发/" itemprop="url" rel="index">
+                    <span itemprop="name">Android开发</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h6 id="戏说江湖静如水，游荡江湖才有情。我就是江湖中的一个戏子。"><a href="#戏说江湖静如水，游荡江湖才有情。我就是江湖中的一个戏子。" class="headerlink" title="戏说江湖静如水，游荡江湖才有情。我就是江湖中的一个戏子。"></a>戏说江湖静如水，游荡江湖才有情。我就是江湖中的一个戏子。</h6><hr>
+<p>俗话说，入行先入门。作为一名android学习者，四大组件是android中的核心组件，岂有不学之理。然而，本人才疏学浅，叙述略有不当之处，敬请谅解。</p>
+<hr>
+<p>Service是四大组件之一，使用的频率也非常高。Service相当于没有界面的Activity。为什么这样说呢？这就得明白Service几个重要的常识。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">Service和Activity一样，都是作为应用的一部分运行在应用的主线程中。</div></pre></td></tr></table></figure></p>
+<p>这就说明，Service既不是一个独立的进程，也不是一个线程。所以如果要在Service中处理比较耗时或者长时间的任务，需要在Service中开启新的线程，避免阻塞主线程。</p>
+<h4 id="Service的特性"><a href="#Service的特性" class="headerlink" title="Service的特性"></a>Service的特性</h4><p>Service有两个非常重要的特性，这两个特性也和Service的生命周期有关。</p>
+<ol>
+<li>Service可以运行在后台，用户甚至不需要和其交互。这对应于应用调用startService方法，来告知系统对Service进行调度，直到调用stopService结束Service</li>
+<li>应用可以向其他应用通过Service提供相应的功能。这对应于应用调用bindService，应用与Service进行长连接以便进行交互。</li>
+</ol>
+<p>说了这么多，那么Service具体的生命周期又是什么样的呢？</p>
+<h4 id="Service的生命周期"><a href="#Service的生命周期" class="headerlink" title="Service的生命周期"></a>Service的生命周期</h4><p>Service的生命周期大致可以分为两个走向：</p>
+<ol>
+<li><p>通过调用starService启动Service，并通过stopService或stopSelf来结束Service</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">onCreate——onStartCommand——onDestroy</div></pre></td></tr></table></figure>
+</li>
+<li><p>通过调用bindService来与Service建立连接，然后通过unbindService来与Service取消连接</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">onCreate——onBind(Service返回Binder对象)——unBind——onDestory</div></pre></td></tr></table></figure>
+</li>
+</ol>
+<h5 id="注意："><a href="#注意：" class="headerlink" title="注意："></a><em>注意：</em></h5><p><em>多次调用startService只会在第一调用的时候，调用onCreate，后面只会调用onStartCommand方法。而多次调用bindService只会调用一次onBind方法，返回Binder对象</em><br>这两种生命周期的走向，指的是单一走向。当你不仅调用startService，还调用bindService的时候，那么生命周期会有不一样的结果。</p>
+<ol>
+<li>如果你首先调用startService，然后调用bindService，那么生命周期如下：<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">onCreate——onStartCommand——onBind</div></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>这个时候如果你直接调用stopService是不会调用onDestroy方法，其实想想也明白了，这个时候Service已经绑定了，之后断开绑定了，这样才可以销毁Service。</p>
+<ol>
+<li><p>如果你这个时候先调用unbindService，然后调用stopService，这个时候会按正常的生命周期走。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">unBind——onDestroy</div></pre></td></tr></table></figure>
+<ol>
+<li>但是如果你先执行stopService，你会发现没有反应，然后调用unbindService，这个时候会走unBind然后走onDestroy。这个时候你可能很疑惑，因为已经调用了stopService，这个时候断开连接，那么该Service也就销毁了。</li>
+</ol>
+</li>
+</ol>
+<p>好了，生命周期就说这么多了。可能你会发现在bindService的时候需要传入一个ServiceConnection对象。</p>
+<h5 id="ServiceConnection对象"><a href="#ServiceConnection对象" class="headerlink" title="ServiceConnection对象"></a>ServiceConnection对象</h5><p>ServiceConnection顾名思义就是Service连接的操作类，该类有两个方法<br>onServiceConnected，onServiceDisconnected，这两个方法分别是Service连接和断开的时候回调的函数。一般通过onServiceConnected中传递的Binder来和Service进行通信。</p>
+<p>在bindService的过程中，你会发现Service和其他组件进行交互的时候最重要的是IBinder对象，比如onBind返回的就是IBinder，在onServiceConnected中传递的第二个参数也是IBinder，IBinder是进程间通信和跨进程通信的桥梁，IBinder通过transact()和Binder的onTransact()来进行通信。来获得IBinder对象有两种方式，一种是通过AIDL，另外一种是通过Messenger，本质都一样，都是通过IBinder的transact()来传递Parcel类型对象，然后另外一个进程通过Binder对象的onTransact()方法来获取传输的对象，以达到通信的目的。</p>
+<h5 id="AIDL"><a href="#AIDL" class="headerlink" title="AIDL"></a>AIDL</h5><p>AIDL全称叫接口调用语言，作用是简化IPC进程间通信和跨进程通信的实现，实际上AIDL是一个模板，避免了自己实现IPC进程通信的复杂。AIDL实现起来非常简单，只需要三步：</p>
+<ol>
+<li>定义传输数据的接口，如要传输的数据不是parcel类型，则需要继承并实现。</li>
+<li>在编译生成相应的类，并在Service中继承其stub接口，并实现其传输数据的方法。</li>
+<li>在onServiceConnected中对出传输的Binder对象进行方法的调用，以实现数据的传输。</li>
+</ol>
+<p>在这三步中，其中前两步是为了对transact方法的具体操作进行描述，第三步是为通过方法调用来通过onTransact来获取传输的数据，这样就实现了数据的互通。当然AIDL中还有许多细节需要注意，网上有很多这样的例子这里就不详细描述了。</p>
+<h5 id="Messenger"><a href="#Messenger" class="headerlink" title="Messenger"></a>Messenger</h5><p>Messager是通过Handler，底层通过Binder对象来实现跨进程通信的方式，在构造Messenger对象的时候，需要传入Handler对象，通过Handler对象来获得MessengerImpl对象，其实现了IMessenger.stub对象，这看起来是不是很熟悉，对了，和上面的AIDL一样，实现了IMessenger.aidl生成的stub对象，用来进行跨进程通信。这样就很熟悉了，其实底层都一样，只不过上层表现的方式不一样罢了。那么我们来看一看Messenger进行跨进程通信的步骤。</p>
+<ol>
+<li>构造一个Messenger对象，传入Handler对象，通过Message.repyTo.send方法传递数据，然后通过Service的onBind方法返回Messenger的IBinder对象(通过Messenger.getBinder方法)</li>
+<li>在另一个进程与Service建立连接，并通过onServiceConnected来获得IBinder对象</li>
+<li>同时再构造一个Messenger对象，通过Handler对象对传输过来的参数进行操作。</li>
+</ol>
+<p>有的人也许看到过Service分为Local Service和Remote Service两种，其实这是因为Service启动方式不同而已，Local Service其实只需要通过startService就可以，然后Service就可以做自己的事了，用户不需要和Service进行交互。但是Remote Service就不行了，RemoteService的本质就是为了其他的进程提供相应的功能，这得需要交互，需要进行绑定，这就需要bindService。当然通过AIDL，Messenger都需要和Service进行绑定。目的不一样，结果就不一样。</p>
+<p>当然Service还有许多其它有趣的功能，这里就先说这么多了。讲得不好大家可别见怪哦！</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Android四大组件/" rel="tag"># Android四大组件</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/06/09/戏说BroadcastReceiver/" rel="prev" title="戏说BroadcastReceiver">
+                戏说BroadcastReceiver <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.gif"
+               alt="final-qun" />
+          <p class="site-author-name" itemprop="name">final-qun</p>
+           
+              <p class="site-description motion-element" itemprop="description">这里只是代码的搬运工</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/">
+                <span class="site-state-item-count">5</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">1</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">1</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-6"><a class="nav-link" href="#戏说江湖静如水，游荡江湖才有情。我就是江湖中的一个戏子。"><span class="nav-number">1.</span> <span class="nav-text">戏说江湖静如水，游荡江湖才有情。我就是江湖中的一个戏子。</span></a></li></ol></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Service的特性"><span class="nav-number"></span> <span class="nav-text">Service的特性</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Service的生命周期"><span class="nav-number"></span> <span class="nav-text">Service的生命周期</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#注意："><span class="nav-number"></span> <span class="nav-text">注意：</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#ServiceConnection对象"><span class="nav-number"></span> <span class="nav-text">ServiceConnection对象</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#AIDL"><span class="nav-number"></span> <span class="nav-text">AIDL</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Messenger"><span class="nav-number"></span> <span class="nav-text">Messenger</span></a></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">final-qun</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+  
+  <script type="text/javascript" src="/lib/three/three.min.js"></script>
+
+  
+  <script type="text/javascript" src="/lib/three/three-waves.min.js"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
